@@ -1,17 +1,26 @@
 import pandas as pd 
 import seaborn as sns
 import matplotlib.pyplot as plt
-import datetime
 
 
 df = pd.read_csv('survey-res.csv')
-df_columns = df.columns.to_list()
+#df_columns = df.columns.to_list()
 #print(df_columns)
 
-
-p_languages = df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().value_counts().plot(kind='bar', figsize=(15,7), color='red')
+"""
+Show most popular programming languages, 
+database enviroments, cloud platforms and
+development enviroments among Stack Overflow community
+"""
+p_languages = df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().value_counts()
+p_languages.plot(kind='bar', figsize=(15,7), color='red')
 plt.title('Programming Languages')
 img_p_language = plt.savefig('img_charts/p_language.png', dpi=300, bbox_inches='tight')
+plt.clf()
+
+p_languages_fut = df['LanguageWantToWorkWith'].str.split(';', expand = True).stack().value_counts().plot(kind='bar', figsize=(15,7), color='red')
+plt.title('Programming Languages want to work with')
+img_p_language_fut = plt.savefig('img_charts/p_language_fut.png', dpi=300, bbox_inches='tight')
 plt.clf()
             
 data_base = df['DatabaseHaveWorkedWith'].str.split(';', expand = True).stack().value_counts().plot(kind='bar', color='green')
@@ -28,6 +37,25 @@ dev_enviroment = df['NEWCollabToolsHaveWorkedWith'].str.split(';', expand = True
 plt.title('Development Enviroments')
 img_dev_enviroment = plt.savefig('img_charts/dev_enviroment.png', dpi=300, bbox_inches='tight')
 plt.clf()
+
+
+"""
+Show from what countries most of the student developers 
+use Stack Overflow
+"""
+country = df['Country']
+students = (country[(df['MainBranch'] == 'I am a student who is learning to code')]).head(20).value_counts().plot(kind='pie')
+plt.title('Students Developers')
+img_students = plt.savefig('img_charts/students.png', dpi=300, bbox_inches='tight')
+plt.clf()
+
+
+
+
+
+
+
+
 
 
 
