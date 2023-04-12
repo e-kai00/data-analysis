@@ -40,18 +40,31 @@ plt.clf()
 
 
 """
-Show from what countries most of the student developers 
-use Stack Overflow
+Show from which countries most of the student developers 
+on StackOverflow
 """
-country = df['Country']
-students = (country[(df['MainBranch'] == 'I am a student who is learning to code')]).head(20).value_counts().plot(kind='pie')
-plt.title('Students Developers')
+# country = df['Country']
+# students = (country[(df['MainBranch'] == 'I am a student who is learning to code')]).head(20).value_counts().plot(kind='pie')
+# plt.title('Students Developers')
+# img_students = plt.savefig('img_charts/students.png', dpi=300, bbox_inches='tight')
+# plt.clf()
+
+students = df[df['MainBranch'] == 'I am a student who is learning to code']
+country = students['Country'].head(15).value_counts().plot(kind='pie')
+plt.title('Dep')
 img_students = plt.savefig('img_charts/students.png', dpi=300, bbox_inches='tight')
 plt.clf()
 
+"""
+Show which age group code primarily as a hobby
+"""
 
-
-
+hobby_coders = df[df['MainBranch'] == 'I code primarily as a hobby']
+age_hobby = hobby_coders['Age'].value_counts()
+age_hobby.plot(kind='bar', xlabel='Age group', ylabel='Number of people coding as a hobby')
+plt.title('Hobby Coders')
+img_age_hobby = plt.savefig('img_charts/age_hobby.png', dpi=300, bbox_inches='tight')
+plt.clf()
 
 
 
