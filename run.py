@@ -5,29 +5,24 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv('survey-res-halved.csv')
 df_columns = df.columns.to_list()
-# print(df.columns[4])
+print(df.columns)
 
 # print(df['MainBranch'].value_counts())  # option 1
 # print(df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().value_counts())  # option 2
 
 """
-Print servey result function
+Print servey result 
 """
 # for column in df.columns:    
-#     q = df[column].nunique()
-#     # if len(q) > 1:
-#     #     count = df[column].value_counts()
-#     #     print('option #2')
-#     # else:
-#     #     count = df[column].value_counts()
-#     #     print('option #1')
+#      q = df[column].nunique()
+#     if len(q) > 1:
+#          count = df[column].value_counts()
+#          print('option #2')
+#      else:
+#          count = df[column].value_counts()
+#          print('option #1')
 #     print(q)
 
-# print(df_columns[3].value_counts())
-# print(df['Country'].head().value_counts)
-# print(df['Age'].head().value_counts)
-# print(df['LanguageHaveWorkedWith'].head().value_counts)
-# print(df['MainBranch'].head().value_counts)
 
 """
 To count all answers in survey
@@ -39,12 +34,62 @@ To count all answers in survey
 """
 Count answers in particular column with single choice answers
 """
-column = 'Age'
-if column in df.columns:
-    count = df[column].value_counts()
-    print(count.head())
+# column = 'Age'
+# if column in df.columns:
+#     count = df[column].value_counts()
+#     print(count.head())
 
+"""
+Sections
+"""
+basic_info = df[['MainBranch', 'Employment', 'Country']]
+ed_work = df[['YearsCodePro', 'DevType', 'OrgSize', 'Currency', 'CompTotal',
+       'CompFreq']]
+tech_culture = df[['LanguageHaveWorkedWith', 'LanguageWantToWorkWith',
+       'DatabaseHaveWorkedWith', 'DatabaseWantToWorkWith',
+       'PlatformHaveWorkedWith', 'PlatformWantToWorkWith',
+       'WebframeHaveWorkedWith', 'WebframeWantToWorkWith',
+       'MiscTechHaveWorkedWith', 'MiscTechWantToWorkWith',
+       'ToolsTechHaveWorkedWith', 'ToolsTechWantToWorkWith',
+       'NEWCollabToolsHaveWorkedWith', 'NEWCollabToolsWantToWorkWith', 'OpSys',
+       'NEWStuck']]
+community = [['NEWSOSites', 'SOVisitFreq', 'SOAccount', 'SOPartFreq',
+       'SOComm', 'NEWOtherComms']]
+demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
+       'Ethnicity', 'Accessibility', 'MentalHealth']]
+final_q = df[['SurveyLength',
+       'SurveyEase', 'ConvertedCompYearly']]
+print(community)
 
+def user_input():
+    """
+    Take the user's input
+    """
+    print('Choose section you want to explore\n')
+    print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
+    data_str = int(input('Enter number of section:\n'))
+    if data_str == 1:
+        print('Section 1')
+    elif data_str == 2:
+        print('Section 2')
+    elif data_str == 3:
+        print('Section 3')
+    elif data_str == 4:
+        print('Section 4')
+    elif data_str == 5:
+        print('Section 5')
+    elif data_str == 6:
+        print('Section 6')
+
+# user_input()
+
+def chosen_section():
+    """
+    Print all columns of the chosen section and 
+    take input to get inside on answeres
+    """
+
+    print('Section questions')
 
 
 
