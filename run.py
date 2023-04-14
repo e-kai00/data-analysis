@@ -16,7 +16,6 @@ To count all answers in survey
 #     print(df[column].value_counts())
 
 
-
 """
 Sections
 """
@@ -31,8 +30,7 @@ tech_culture = df[['LanguageHaveWorkedWith', 'LanguageWantToWorkWith',
        'ToolsTechHaveWorkedWith', 'ToolsTechWantToWorkWith',
        'NEWCollabToolsHaveWorkedWith', 'NEWCollabToolsWantToWorkWith', 'OpSys',
        'NEWStuck']]
-community = [['NEWSOSites', 'SOVisitFreq', 'SOAccount', 'SOPartFreq',
-       'SOComm', 'NEWOtherComms']]
+community = df[['NEWSOSites', 'SOVisitFreq', 'SOAccount', 'SOPartFreq', 'SOComm', 'NEWOtherComms']]
 demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
        'Ethnicity', 'Accessibility', 'MentalHealth']]
 final_q = df[['SurveyLength', 'SurveyEase', 'ConvertedCompYearly']]
@@ -93,9 +91,27 @@ def display_survey_results(question):
         print(count.head(15))
       
 
+def back_to_selection():
+
+    
+    q = input('\nWould you like to continue?\nChoose Y or N\n')
+    if q == 'y':
+        print('yes')
+        qu = input('Would you like to go back to Questions or Sections\n Choose Q or S\n')
+        if qu == 'q':
+            print('questions')
+        else:
+            print('sections')
+    else:
+        print('no')
+
+    # if yes, back to Section or back to Questions
+    # in no, break
+
 
 quest = user_input()
 display_survey_results(quest)
+back_to_selection()
 
 
 
