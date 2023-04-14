@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv('survey-res-halved.csv')
 df_columns = df.columns.to_list()
-print(df.columns)
+#print(df.columns)
 
 # print(df['MainBranch'].value_counts())  # option 1
 # print(df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().value_counts())  # option 2
@@ -57,9 +57,9 @@ community = [['NEWSOSites', 'SOVisitFreq', 'SOAccount', 'SOPartFreq',
        'SOComm', 'NEWOtherComms']]
 demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
        'Ethnicity', 'Accessibility', 'MentalHealth']]
-final_q = df[['SurveyLength',
-       'SurveyEase', 'ConvertedCompYearly']]
-print(community)
+final_q = df[['SurveyLength', 'SurveyEase', 'ConvertedCompYearly']]
+
+# print(demograph.columns.tolist())
 
 def user_input():
     """
@@ -67,21 +67,40 @@ def user_input():
     """
     print('Choose section you want to explore\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
-    data_str = int(input('Enter number of section:\n'))
-    if data_str == 1:
+    section_number = int(input('Enter number of section:\n'))
+    if section_number == 1:
+        choice = basic_info
         print('Section 1')
-    elif data_str == 2:
+    elif section_number == 2:
+        choice = ed_work
         print('Section 2')
-    elif data_str == 3:
+    elif section_number == 3:
+        choice = tech_culture
         print('Section 3')
-    elif data_str == 4:
+    elif section_number == 4:
+        choice = community
         print('Section 4')
-    elif data_str == 5:
+    elif section_number == 5:
+        choice = demograph
         print('Section 5')
-    elif data_str == 6:
+    elif section_number == 6:
+        choice = final_q
         print('Section 6')
 
-# user_input()
+
+    result = choice.columns.tolist()
+    for i, column in enumerate(result):
+        print(f'{i+1} {column}')
+
+    
+    
+
+    #question_number = input('Enter question number to see survey results')
+    
+
+    
+
+user_input()
 
 def chosen_section():
     """
@@ -89,7 +108,8 @@ def chosen_section():
     take input to get inside on answeres
     """
 
-    print('Section questions')
+    print('Section questions\n')
+    q_num = int(input('Choose question:\n'))
 
 
 
