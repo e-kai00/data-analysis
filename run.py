@@ -7,22 +7,6 @@ df = pd.read_csv('survey-res-halved.csv')
 df_columns = df.columns.to_list()
 #print(df.columns)
 
-# print(df['MainBranch'].value_counts())  # option 1
-# print(df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().value_counts())  # option 2
-
-"""
-Print servey result 
-"""
-# for column in df.columns:    
-#      q = df[column].nunique()
-#     if len(q) > 1:
-#          count = df[column].value_counts()
-#          print('option #2')
-#      else:
-#          count = df[column].value_counts()
-#          print('option #1')
-#     print(q)
-
 
 """
 To count all answers in survey
@@ -31,13 +15,7 @@ To count all answers in survey
 #     print(column)
 #     print(df[column].value_counts())
 
-"""
-Count answers in particular column with single choice answers
-"""
-# column = 'Age'
-# if column in df.columns:
-#     count = df[column].value_counts()
-#     print(count.head())
+
 
 """
 Sections
@@ -59,7 +37,6 @@ demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
        'Ethnicity', 'Accessibility', 'MentalHealth']]
 final_q = df[['SurveyLength', 'SurveyEase', 'ConvertedCompYearly']]
 
-# print(demograph.columns.tolist())
 
 def user_input():
     """
@@ -94,7 +71,6 @@ def user_input():
         print(f'{i+1}- {column}')
 
     question_num = int(input('Enter question number to see survey results\n'))
-    
     # subtract 1 to get to zero-based index
     question_id = result[question_num -1] 
     
@@ -104,24 +80,22 @@ def user_input():
 
 def display_survey_results(question):
     """
-    Take result from the user's input and display survey 
-    results for the chosen question
+    Take result from the user's input, check if 
+    the question is multi- or single-answer,
+    display survey results for the chosen question
     """
-
-    column = question
-    if column in df.columns:
-        count = df[column].value_counts()
+    
+    if question in df.columns:
+        if df[question].str.contains(';').any():
+            count = df[question].str.split(';', expand = True).stack().value_counts()
+        else:    
+            count = df[question].value_counts()
         print(count.head(15))
       
 
 
-#quest = user_input()
-# display_survey_results(quest)
-# print(df['Currency'].head())
-
-
-
-
+quest = user_input()
+display_survey_results(quest)
 
 
 
