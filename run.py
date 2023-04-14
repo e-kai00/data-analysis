@@ -63,7 +63,8 @@ final_q = df[['SurveyLength', 'SurveyEase', 'ConvertedCompYearly']]
 
 def user_input():
     """
-    Take the user's input
+    Display the enumerated sections, take the user's choice of a section;
+    Display the enumerated questions, take the user's choice of a question;
     """
     print('Choose section you want to explore\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
@@ -87,29 +88,38 @@ def user_input():
         choice = final_q
         print('Section 6')
 
-
+    # display an enumerated list of questions
     result = choice.columns.tolist()
     for i, column in enumerate(result):
-        print(f'{i+1} {column}')
+        print(f'{i+1}- {column}')
 
+    question_num = int(input('Enter question number to see survey results\n'))
     
+    # subtract 1 to get to zero-based index
+    question_id = result[question_num -1] 
+    
+    return question_id
     
 
-    #question_number = input('Enter question number to see survey results')
-    
 
-    
-
-user_input()
-
-def chosen_section():
+def display_survey_results(question):
     """
-    Print all columns of the chosen section and 
-    take input to get inside on answeres
+    Take result from the user's input and display survey 
+    results for the chosen question
     """
 
-    print('Section questions\n')
-    q_num = int(input('Choose question:\n'))
+    column = question
+    if column in df.columns:
+        count = df[column].value_counts()
+        print(count.head(15))
+      
+
+
+#quest = user_input()
+# display_survey_results(quest)
+# print(df['Currency'].head())
+
+
 
 
 
