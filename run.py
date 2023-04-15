@@ -36,7 +36,7 @@ demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
 final_q = df[['SurveyLength', 'SurveyEase', 'ConvertedCompYearly']]
 
 
-def user_input():
+def display_sections():
     """
     Display the enumerated sections, take the user's choice of a section;
     Display the enumerated questions, take the user's choice of a question;
@@ -62,9 +62,14 @@ def user_input():
     elif section_number == 6:
         choice = final_q
         print('Section 6')
+    
+    return choice
+
+
+def display_questions(section):
 
     # display an enumerated list of questions
-    result = choice.columns.tolist()
+    result = section.columns.tolist()
     for i, column in enumerate(result):
         print(f'{i+1}- {column}')
 
@@ -91,27 +96,37 @@ def display_survey_results(question):
         print(count.head(15))
       
 
-def back_to_selection():
+def back_to_selection():  # to finish later
 
     
     q = input('\nWould you like to continue?\nChoose Y or N\n')
     if q == 'y':
         print('yes')
-        qu = input('Would you like to go back to Questions or Sections\n Choose Q or S\n')
+        qu = input('Would you like to go back to Questions or Sections\nChoose Q or S\n')
         if qu == 'q':
             print('questions')
+            display_questions(user_section)
         else:
             print('sections')
+            display_sections()
     else:
         print('no')
 
-    # if yes, back to Section or back to Questions
-    # in no, break
+#pd.set_option('display.max_columns', None)    # display all columns of crosstab
+
+test_single = pd.crosstab(df['Age'], df['MainBranch'])  
+# print(test_single)
+
+lang = df['DatabaseHaveWorkedWith'].str.split(';', expand = True).stack().reset_index(drop=True)
+tets_single_multi = pd.crosstab(df['Age'], lang)
+# print(tets_single_multi)
 
 
-quest = user_input()
-display_survey_results(quest)
-back_to_selection()
+
+# user_section = display_sections()
+# user_question = display_questions(user_section)
+# display_survey_results(user_question)
+# back_to_selection()
 
 
 
