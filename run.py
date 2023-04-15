@@ -4,21 +4,9 @@ import matplotlib.pyplot as plt
 
 
 df = pd.read_csv('survey-res-halved.csv')
-df_columns = df.columns.to_list()
-#print(df.columns)
 
 
-"""
-To count all answers in survey
-"""
-# for column in df.columns:   
-#     print(column)
-#     print(df[column].value_counts())
-
-
-"""
-Sections
-"""
+# Devide columns into sections
 basic_info = df[['MainBranch', 'Employment', 'Country']]
 ed_work = df[['YearsCodePro', 'DevType', 'OrgSize', 'Currency', 'CompTotal',
        'CompFreq']]
@@ -41,27 +29,26 @@ def display_sections():
     Display the enumerated sections, take the user's choice of a section;
     Display the enumerated questions, take the user's choice of a question;
     """
-    print('Choose section you want to explore\n')
+    print('Sections:\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
-    section_number = int(input('Enter number of section:\n'))
+    section_number = int(input('Enter Section number:\n'))
     if section_number == 1:
         choice = basic_info
-        print('Section 1')
+        
     elif section_number == 2:
         choice = ed_work
-        print('Section 2')
+        
     elif section_number == 3:
         choice = tech_culture
-        print('Section 3')
+        
     elif section_number == 4:
         choice = community
-        print('Section 4')
+        
     elif section_number == 5:
         choice = demograph
-        print('Section 5')
+        
     elif section_number == 6:
-        choice = final_q
-        print('Section 6')
+        choice = final_q              
     
     return choice
 
@@ -73,10 +60,12 @@ def display_questions(section):
     for i, column in enumerate(result):
         print(f'{i+1}- {column}')
 
-    question_num = int(input('Enter question number to see survey results\n'))
+    question_num = int(input('\nEnter Question number to see survey results\n'))
     # subtract 1 to get to zero-based index
     question_id = result[question_num -1] 
     
+    print(f'You have chosen {question_id}')
+    print('\n' *3)
     return question_id
     
 
@@ -85,7 +74,7 @@ def display_survey_results(question):
     """
     Take result from the user's input, check if 
     the question is multi- or single-answer,
-    display survey results for the chosen question
+    display first 15 survey results for the chosen question
     """
     
     if question in df.columns:
@@ -112,19 +101,23 @@ def back_to_selection():  # to finish later
     else:
         print('no')
 
-def cross_tab():
 
+def cross_tab():
+    """
+    Allow the user to select two datasets 
+    for cross-tabulation chart
+    """
      
-    print('Choose dataset 1\n')
+    print('\nChoose DATASET 1\n')
     sec_group1 = display_sections()
     question_group1 = display_questions(sec_group1)
 
-    print('Choose dataset 2\n')
+    print('\nChoose DATASET 2\n')
     sec_group2 = display_sections()
     question_group2 = display_questions(sec_group2)
 
     # display all columns of crosstab
-    #pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_columns', None)
 
     if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any(): # does not work as expected
         multi_q1 = df[question_group1].str.split(';', expand = True).stack().reset_index(drop=True)
@@ -146,26 +139,14 @@ def cross_tab():
         single = pd.crosstab(df[question_group1], df[question_group2]) 
         print(single)
 
-cross_tab()
 
 
-test_single = pd.crosstab(df['Age'], df['MainBranch'])  
-# print(test_single)
 
-lang = df['DatabaseHaveWorkedWith'].str.split(';', expand = True).stack().reset_index(drop=True)
-tets_single_multi = pd.crosstab(df['Age'], lang)
-# print(tets_single_multi)
-
-s1 = df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().reset_index(drop=True)
-s2 = df['DevType'].str.split(';', expand = True).stack().reset_index(drop=True)
-tets_multi_multi = pd.crosstab(s1, s2)
-# print(tets_multi_multi)
-
-
-# user_section = display_sections()
-# user_question = display_questions(user_section)
-# display_survey_results(user_question)
+user_section = display_sections()
+user_question = display_questions(user_section)
+display_survey_results(user_question)
 # back_to_selection()
+cross_tab()
 
 
 
