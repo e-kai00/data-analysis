@@ -112,7 +112,42 @@ def back_to_selection():  # to finish later
     else:
         print('no')
 
-#pd.set_option('display.max_columns', None)    # display all columns of crosstab
+def cross_tab():
+
+     
+    print('Choose dataset 1\n')
+    sec_group1 = display_sections()
+    question_group1 = display_questions(sec_group1)
+
+    print('Choose dataset 2\n')
+    sec_group2 = display_sections()
+    question_group2 = display_questions(sec_group2)
+
+    # display all columns of crosstab
+    #pd.set_option('display.max_columns', None)
+
+    if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any(): # does not work as expected
+        multi_q1 = df[question_group1].str.split(';', expand = True).stack().reset_index(drop=True)
+        multi_q2 = df[question_group2].str.split(';', expand = True).stack().reset_index(drop=True)
+        multi_multi = pd.crosstab(multi_q1, multi_q2)
+        print(multi_multi)
+     
+    elif df[question_group1].str.contains(';').any():     
+        multi_q = df[question_group1].str.split(';', expand = True).stack().reset_index(drop=True)        
+        multi_sigle = pd.crosstab(multi_q, df[question_group2])
+        print(multi_sigle)
+
+    elif df[question_group2].str.contains(';').any():   
+        multi_qu = df[question_group2].str.split(';', expand = True).stack().reset_index(drop=True)        
+        single_multi = pd.crosstab(df[question_group1], multi_qu)
+        print(single_multi)
+
+    else: 
+        single = pd.crosstab(df[question_group1], df[question_group2]) 
+        print(single)
+
+cross_tab()
+
 
 test_single = pd.crosstab(df['Age'], df['MainBranch'])  
 # print(test_single)
@@ -121,6 +156,10 @@ lang = df['DatabaseHaveWorkedWith'].str.split(';', expand = True).stack().reset_
 tets_single_multi = pd.crosstab(df['Age'], lang)
 # print(tets_single_multi)
 
+s1 = df['LanguageHaveWorkedWith'].str.split(';', expand = True).stack().reset_index(drop=True)
+s2 = df['DevType'].str.split(';', expand = True).stack().reset_index(drop=True)
+tets_multi_multi = pd.crosstab(s1, s2)
+# print(tets_multi_multi)
 
 
 # user_section = display_sections()
