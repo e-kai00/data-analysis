@@ -55,17 +55,16 @@ def display_sections():
 
 def display_questions(section):
 
-    # display an enumerated list of questions
+    # display the enumerated list of questions
     result = section.columns.tolist()
     for i, column in enumerate(result):
         print(f'{i+1}- {column}')
 
-    question_num = int(input('\nEnter Question number to see survey results\n'))
+    question_num = int(input('Enter Question number to see survey results\n'))
     # subtract 1 to get to zero-based index
     question_id = result[question_num -1] 
     
     print(f'You have chosen {question_id}')
-    print('\n' *3)
     return question_id
     
 
@@ -77,29 +76,45 @@ def display_survey_results(question):
     display first 15 survey results for the chosen question
     """
     
+    print('\n' *3)
+    print('\t\tRESULTS\n')
     if question in df.columns:
         if df[question].str.contains(';').any():
             count = df[question].str.split(';', expand = True).stack().value_counts()
         else:    
             count = df[question].value_counts()
         print(count.head(15))
-      
 
-def back_to_selection():  # to finish later
+   
+def back_to_selection():  
 
     
     q = input('\nWould you like to continue?\nChoose Y or N\n')
     if q == 'y':
         print('yes')
-        qu = input('Would you like to go back to Questions or Sections\nChoose Q or S\n')
-        if qu == 'q':
+        qu = int(input('Would you like to go to:\n 1- Sections\n 2- Questions\n 3- Cross-tabulation analysis\n'))
+        if qu == 1:
+            print('sections')
+            main()
+        elif qu == 2:                    # to fix Qiestion option
             print('questions')
             display_questions(user_section)
         else:
-            print('sections')
-            display_sections()
+            cross_tab()
     else:
         print('no')
+
+
+# def selection():
+#     qu = int(input('Would you like to go to:\n 1- Sections\n 2- Cross-tabulation analysis\n 3- Quit'))
+#     if qu == 1:
+#         print('go to sections')
+#         main()
+#     elif qu == 2:
+#         print('go to cross-tab')
+#         cross_tab()
+#     else:
+#         print('quit')
 
 
 def cross_tab():
@@ -139,17 +154,19 @@ def cross_tab():
         single = pd.crosstab(df[question_group1], df[question_group2]) 
         print(single)
 
+    back_to_selection()
 
 
 
-user_section = display_sections()
-user_question = display_questions(user_section)
-display_survey_results(user_question)
+def main():
+    user_section = display_sections()
+    user_question = display_questions(user_section)
+    display_survey_results(user_question)
+    back_to_selection()
+    #cross_tab()
+
+# main()
 # back_to_selection()
-cross_tab()
-
-
-
 
 
 
