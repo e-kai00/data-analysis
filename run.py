@@ -21,7 +21,31 @@ tech_culture = df[['LanguageHaveWorkedWith', 'LanguageWantToWorkWith',
 community = df[['NEWSOSites', 'SOVisitFreq', 'SOAccount', 'SOPartFreq', 'SOComm', 'NEWOtherComms']]
 demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
        'Ethnicity', 'Accessibility', 'MentalHealth']]
-final_q = df[['SurveyLength', 'SurveyEase', 'ConvertedCompYearly']]
+final_q = df[['SurveyLength', 'SurveyEase']]
+
+
+def display_menu():  
+
+    
+    print('1- Survey Results\n2- Cross-tab Analysis\n3- Edit Column names')
+    user_choice = input('Choose option number 1, 2 or 3:\n')
+
+    # q = input('\nWould you like to continue?\nChoose Y or N\n')
+    # if q == 'y':
+    #     print('yes')
+    #     qu = int(input('Would you like to go to:\n 1- Sections\n 2- Questions\n 3- Cross-tabulation analysis\n'))
+    #     if qu == 1:
+    #         print('sections')
+    #         main()
+    #     elif qu == 2:                    # to fix Qiestion option
+    #         print('questions')
+    #         display_questions(user_section)
+    #     else:
+    #         cross_tab()
+    # else:
+    #     print('no')
+    # print('\n' *3)
+
 
 
 def display_sections():
@@ -29,7 +53,7 @@ def display_sections():
     Display the enumerated sections, take the user's choice of a section;
     Display the enumerated questions, take the user's choice of a question;
     """
-    print('Sections:\n')
+    print('\nSECTIONS:\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
     section_number = int(input('Enter Section number:\n'))
     if section_number == 1:
@@ -53,14 +77,16 @@ def display_sections():
     return choice
 
 
+
 def display_questions(section):
 
+    print('\nQUESTIONS:\n')
     # display the enumerated list of questions
     result = section.columns.tolist()
     for i, column in enumerate(result):
         print(f'{i+1}- {column}')
 
-    question_num = int(input('Enter Question number to see survey results\n'))
+    question_num = int(input('\nEnter Question number\n'))
     # subtract 1 to get to zero-based index
     question_id = result[question_num -1] 
     
@@ -85,36 +111,6 @@ def display_survey_results(question):
             count = df[question].value_counts()
         print(count.head(15))
 
-   
-def back_to_selection():  
-
-    
-    q = input('\nWould you like to continue?\nChoose Y or N\n')
-    if q == 'y':
-        print('yes')
-        qu = int(input('Would you like to go to:\n 1- Sections\n 2- Questions\n 3- Cross-tabulation analysis\n'))
-        if qu == 1:
-            print('sections')
-            main()
-        elif qu == 2:                    # to fix Qiestion option
-            print('questions')
-            display_questions(user_section)
-        else:
-            cross_tab()
-    else:
-        print('no')
-
-
-# def selection():
-#     qu = int(input('Would you like to go to:\n 1- Sections\n 2- Cross-tabulation analysis\n 3- Quit'))
-#     if qu == 1:
-#         print('go to sections')
-#         main()
-#     elif qu == 2:
-#         print('go to cross-tab')
-#         cross_tab()
-#     else:
-#         print('quit')
 
 
 def cross_tab():
@@ -123,27 +119,29 @@ def cross_tab():
     for cross-tabulation chart
     """
      
-    print('\nChoose DATASET 1\n')
+    print('\n\t\tChoose DATASET 1\n')
     sec_group1 = display_sections()
     question_group1 = display_questions(sec_group1)
 
-    print('\nChoose DATASET 2\n')
+    print('\n\t\tChoose DATASET 2\n')
     sec_group2 = display_sections()
     question_group2 = display_questions(sec_group2)
 
+    print('\n' *3)
+    print('\t\tRESULTS\n')
     # display all columns of crosstab
     pd.set_option('display.max_columns', None)
 
     if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any(): # does not work as expected
         multi_q1 = df[question_group1].str.split(';', expand = True).stack().reset_index(drop=True)
         multi_q2 = df[question_group2].str.split(';', expand = True).stack().reset_index(drop=True)
-        multi_multi = pd.crosstab(multi_q1, multi_q2)
+        multi_multi = pd.crosstab(multi_q1, multi_q2)        
         print(multi_multi)
      
     elif df[question_group1].str.contains(';').any():     
         multi_q = df[question_group1].str.split(';', expand = True).stack().reset_index(drop=True)        
-        multi_sigle = pd.crosstab(multi_q, df[question_group2])
-        print(multi_sigle)
+        multi_single = pd.crosstab(multi_q, df[question_group2])           
+        print(multi_single)
 
     elif df[question_group2].str.contains(';').any():   
         multi_qu = df[question_group2].str.split(';', expand = True).stack().reset_index(drop=True)        
@@ -154,19 +152,30 @@ def cross_tab():
         single = pd.crosstab(df[question_group1], df[question_group2]) 
         print(single)
 
-    back_to_selection()
+    display_menu()
 
 
 
-def main():
-    user_section = display_sections()
-    user_question = display_questions(user_section)
-    display_survey_results(user_question)
-    back_to_selection()
-    #cross_tab()
+def change_column_name(df, old_name):    
+    
+    new_name = input(f'Enter new column name for {old_name}')
+    df.rename(columns={old_name: new_name}, inplace=True)
+    print(df.columns)
+    # return df.columns  
+
+
+
+# def main():
+    
+#     user_section = display_sections()
+#     user_question = display_questions(user_section)
+#     display_survey_results(user_question)
+#     display_menu()
+    
 
 # main()
-# back_to_selection()
+print('2021 Stack Overflow Developer Survey')
+display_menu()
 
 
 
