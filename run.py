@@ -1,6 +1,7 @@
 import pandas as pd 
 import seaborn as sns
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 
 
 df = pd.read_csv('survey-res-halved.csv')
@@ -26,25 +27,23 @@ final_q = df[['SurveyLength', 'SurveyEase']]
 
 def display_menu():  
 
-    
-    print('1- Survey Results\n2- Cross-tab Analysis\n3- Edit Column names')
-    user_choice = input('Choose option number 1, 2 or 3:\n')
+    print(tabulate([['1- ', 'Survey results'], ['2- ', 'Cross-tab Analysis'], ['3- ', 'Edit Column names'], ['4- ', 'Exit']]))
+    # print('1- Survey Results\n2- Cross-tab Analysis\n3- Edit Column names\n4- Exit')
+    user_choice = int(input('Choose option number 1, 2, 3 or 4:\n'))
 
-    # q = input('\nWould you like to continue?\nChoose Y or N\n')
-    # if q == 'y':
-    #     print('yes')
-    #     qu = int(input('Would you like to go to:\n 1- Sections\n 2- Questions\n 3- Cross-tabulation analysis\n'))
-    #     if qu == 1:
-    #         print('sections')
-    #         main()
-    #     elif qu == 2:                    # to fix Qiestion option
-    #         print('questions')
-    #         display_questions(user_section)
-    #     else:
-    #         cross_tab()
-    # else:
-    #     print('no')
-    # print('\n' *3)
+    if user_choice == 1:
+        main()
+
+    elif user_choice == 2:
+        cross_tab()
+
+    elif user_choice == 3:
+        user_section = display_sections()
+        user_question = display_questions(user_section)
+        change_column_name(df, user_question)  
+
+    else:
+        print('Exit')  
 
 
 
@@ -163,18 +162,20 @@ def change_column_name(df, old_name):
     print(df.columns)
     # return df.columns  
 
+    display_menu()
 
 
-# def main():
+
+def main():
     
-#     user_section = display_sections()
-#     user_question = display_questions(user_section)
-#     display_survey_results(user_question)
-#     display_menu()
+    user_section = display_sections()
+    user_question = display_questions(user_section)
+    display_survey_results(user_question)
+    display_menu()
     
 
-# main()
-print('2021 Stack Overflow Developer Survey')
+
+print('\t\t2021 Stack Overflow Developer Survey')
 display_menu()
 
 
