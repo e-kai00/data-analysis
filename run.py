@@ -7,7 +7,7 @@ from tabulate import tabulate
 df = pd.read_csv('survey-res-halved.csv')
 
 
-# Devide columns into sections
+# Devide DataFrame columns into sections
 basic_info = df[['MainBranch', 'Employment', 'Country']]
 ed_work = df[['YearsCodePro', 'DevType', 'OrgSize', 'Currency', 'CompTotal',
        'CompFreq']]
@@ -26,10 +26,18 @@ final_q = df[['SurveyLength', 'SurveyEase']]
 
 
 def display_menu():  
+    """
+    Display menu of available options of the programm.
+    The user can choose to see survey results,
+    cross-tab analysis, edit column names or exit the program.
+    """
 
+    print('\n' *2)
+    print('\t\tMENU')
     print(tabulate([['1- ', 'Survey results'], ['2- ', 'Cross-tab Analysis'], ['3- ', 'Edit Column names'], ['4- ', 'Exit']]))
-    # print('1- Survey Results\n2- Cross-tab Analysis\n3- Edit Column names\n4- Exit')
-    user_choice = int(input('Choose option number 1, 2, 3 or 4:\n'))
+    # user_choice = int(input('Choose option number 1, 2, 3 or 4:\n'))
+    user_choice = validate_input(4)
+    
 
     if user_choice == 1:
         main()
@@ -46,38 +54,66 @@ def display_menu():
         print('Exit')  
 
 
+def validate_input(max_value):
+    
+    while True:
+        try:
+            input_box = int(input('Enter a number: '))
+            if input_box > max_value:
+                raise UnboundLocalError
+            break
+        except ValueError:
+            print('Invalid data!!!!\nTry again')  
+        except UnboundLocalError:
+            print('out of range!\nTry again')       
+              
+        
+    return input_box
+
+
 
 def display_sections():
     """
     Display the enumerated sections, take the user's choice of a section;
     Display the enumerated questions, take the user's choice of a question;
     """
+        
     print('\nSECTIONS:\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
-    section_number = int(input('Enter Section number:\n'))
+    # section_number = int(input('Enter Section number:\n'))
+    section_number = validate_input(6)    
+            
+             
+
     if section_number == 1:
         choice = basic_info
-        
+            
     elif section_number == 2:
         choice = ed_work
-        
+            
     elif section_number == 3:
         choice = tech_culture
-        
+            
     elif section_number == 4:
         choice = community
-        
+            
     elif section_number == 5:
         choice = demograph
-        
+            
     elif section_number == 6:
-        choice = final_q              
+        choice = final_q                    
     
+    print(choice)
     return choice
+    
 
 
 
 def display_questions(section):
+    """
+    Display the list of questions of the chosen
+    section.
+    """
 
     print('\nQUESTIONS:\n')
     # display the enumerated list of questions
@@ -131,7 +167,7 @@ def cross_tab():
     # display all columns of crosstab
     pd.set_option('display.max_columns', None)
 
-    if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any(): # does not work as expected
+    if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any(): 
         multi_q1 = df[question_group1].str.split(';', expand = True).stack().reset_index(drop=True)
         multi_q2 = df[question_group2].str.split(';', expand = True).stack().reset_index(drop=True)
         multi_multi = pd.crosstab(multi_q1, multi_q2)        
@@ -156,8 +192,12 @@ def cross_tab():
 
 
 def change_column_name(df, old_name):    
+    """
+    Allow the user to edit or rename column names and 
+    display updated list of all columns.
+    """
     
-    new_name = input(f'Enter new column name for {old_name}')
+    new_name = input(f'Enter new column name for {old_name}\n')
     df.rename(columns={old_name: new_name}, inplace=True)
     print(df.columns)
     # return df.columns  
@@ -175,8 +215,12 @@ def main():
     
 
 
-print('\t\t2021 Stack Overflow Developer Survey')
-display_menu()
+# print('\t\t2021 Stack Overflow Developer Survey')
+# display_menu()
+
+user_section = display_sections()
+user_question = display_questions(user_section)
+
 
 
 
