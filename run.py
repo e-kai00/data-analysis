@@ -239,18 +239,18 @@ def change_column_name(df, old_name):
      
     Prompts the user to enter a new name for the specified DataFrame column. 
     Renames the column using rename() pandas method. 
-    Displays the updated list of all DataFrame columns.
+    Uses the 'tabulate' library to display the updated list of all DataFrame columns.
     Displays the main menu.
 
     Parameters:
         df (pd.DataFrame): the DataFrame to modify.
         old_name (str): the name of the column to be modified.
     """
-    
+    print('\n' *2)
     new_name = input(f'Enter new column name for {old_name}\n')
     df.rename(columns={old_name: new_name}, inplace=True)
-    print(df.columns)
-    # return df.columns  
+    cols = [[col] for col in df.columns]
+    print(tabulate(cols, headers=['Columns'], tablefmt='grid'))
 
     display_menu()
 
