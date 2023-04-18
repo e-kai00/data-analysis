@@ -31,12 +31,12 @@ def display_menu():
     The user can choose to see survey results,
     cross-tab analysis, edit column names or exit the program.
     """
-
+    list_length = range(1, 5)
     print('\n' *2)
     print('\t\tMENU')
     print(tabulate([['1- ', 'Survey results'], ['2- ', 'Cross-tab Analysis'], ['3- ', 'Edit Column names'], ['4- ', 'Exit']]))
     # user_choice = int(input('Choose option number 1, 2, 3 or 4:\n'))
-    user_choice = validate_input(4)
+    user_choice = validate_input(list_length)
     
 
     if user_choice == 1:
@@ -54,19 +54,36 @@ def display_menu():
         print('Exit')  
 
 
-def validate_input(max_value):
-    
-    while True:
+
+def validate_input(lists):
+    """
+    Prompts the user to enter a number, validates the input, 
+    and returns the input if it is valid.
+
+    Parameters:
+        lists: a list of any data type; used to set maximum length of the displayed lists. 
+    Returns:
+        int: the validated input from the user
+    Raises:
+        ValueError: if input values cannot be converted into an integer
+        UnboundLocalError: if input values are outside of the range of possible indices for
+        the given list.
+
+    """
+
+    max_value = len(lists)
+
+    while True:        
         try:
-            input_box = int(input('Enter a number: '))
-            if input_box > max_value:
+            input_box = int(input('Enter a number: '))            
+            if input_box > max_value or input_box == 0:
                 raise UnboundLocalError
             break
+
         except ValueError:
-            print('Invalid data!!!!\nTry again')  
+            print('Invalid data! Please enter a number')  
         except UnboundLocalError:
-            print('out of range!\nTry again')       
-              
+            print('The number is out of range. Try again')                    
         
     return input_box
 
@@ -77,12 +94,12 @@ def display_sections():
     Display the enumerated sections, take the user's choice of a section;
     Display the enumerated questions, take the user's choice of a question;
     """
-        
+
+    list_length = range(1, 7)   
     print('\nSECTIONS:\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career\n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community\n 5- Demographic Information\n 6- Final Questions\n')
     # section_number = int(input('Enter Section number:\n'))
-    section_number = validate_input(6)    
-            
+    section_number = validate_input(list_length)                
              
 
     if section_number == 1:
@@ -103,7 +120,7 @@ def display_sections():
     elif section_number == 6:
         choice = final_q                    
     
-    print(choice)
+    
     return choice
     
 
@@ -121,7 +138,9 @@ def display_questions(section):
     for i, column in enumerate(result):
         print(f'{i+1}- {column}')
 
-    question_num = int(input('\nEnter Question number\n'))
+    # question_num = int(input('\nEnter Question number\n'))
+    question_num = validate_input(result)
+
     # subtract 1 to get to zero-based index
     question_id = result[question_num -1] 
     
@@ -215,11 +234,10 @@ def main():
     
 
 
-# print('\t\t2021 Stack Overflow Developer Survey')
-# display_menu()
+print('\t\t2021 Stack Overflow Developer Survey')
+display_menu()
 
-user_section = display_sections()
-user_question = display_questions(user_section)
+
 
 
 
