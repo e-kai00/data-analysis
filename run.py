@@ -57,7 +57,9 @@ def display_menu():
         change_column_name(df, user_question)
 
     else:
-        print('Exit')
+        print('You have exited the program.')
+        exit()
+        
 
 
 def validate_input(lists):
@@ -211,19 +213,21 @@ def cross_tab():
 
     print('\n' * 3)
     print('\t\tRESULTS\n')
-    # display all columns of the cross-tab
-    pd.set_option('display.max_columns', None)
+    # display 10 columns of the cross-tab
+    pd.set_option('display.max_columns', 10)
 
     if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any():
         multi_q1 = df[question_group1].str.split(';', expand=True).stack().reset_index(drop=True)
         multi_q2 = df[question_group2].str.split(';', expand=True).stack().reset_index(drop=True)
-        multi_multi = pd.crosstab(multi_q1, multi_q2)
-        print(multi_multi)
+        multi_multi = pd.crosstab(multi_q1, multi_q2)       
+        print(multi_multi)        
+
 
     elif df[question_group1].str.contains(';').any():
         multi_q = df[question_group1].str.split(';', expand=True).stack().reset_index(drop=True)
-        multi_single = pd.crosstab(multi_q, df[question_group2])
+        multi_single = pd.crosstab(multi_q, df[question_group2])        
         print(multi_single)
+        
 
     elif df[question_group2].str.contains(';').any():
         multi_qu = df[question_group2].str.split(';', expand=True).stack().reset_index(drop=True)
