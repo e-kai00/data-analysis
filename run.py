@@ -7,20 +7,53 @@ df = pd.read_csv('survey-res-halved.csv')
 
 # Devide DataFrame columns into sections
 basic_info = df[['MainBranch', 'Employment', 'Country']]
-ed_work = df[['YearsCodePro', 'DevType', 'OrgSize', 'Currency', 'CompTotal',
-       'CompFreq']]
-tech_culture = df[['LanguageHaveWorkedWith', 'LanguageWantToWorkWith',
-       'DatabaseHaveWorkedWith', 'DatabaseWantToWorkWith',
-       'PlatformHaveWorkedWith', 'PlatformWantToWorkWith',
-       'WebframeHaveWorkedWith', 'WebframeWantToWorkWith',
-       'MiscTechHaveWorkedWith', 'MiscTechWantToWorkWith',
-       'ToolsTechHaveWorkedWith', 'ToolsTechWantToWorkWith',
-       'NEWCollabToolsHaveWorkedWith', 'NEWCollabToolsWantToWorkWith', 'OpSys',
-       'NEWStuck']]
-community = df[['NEWSOSites', 'SOVisitFreq', 'SOAccount', 'SOPartFreq',
-                'SOComm', 'NEWOtherComms']]
-demograph = df[['Age', 'Gender', 'Trans', 'Sexuality',
-       'Ethnicity', 'Accessibility', 'MentalHealth']]
+ed_work = df[[
+    'YearsCodePro',
+    'DevType',
+    'OrgSize',
+    'Currency',
+    'CompTotal',
+    'CompFreq'
+]]
+
+tech_culture = df[[
+    'LanguageHaveWorkedWith',
+    'LanguageWantToWorkWith',
+    'DatabaseHaveWorkedWith',
+    'DatabaseWantToWorkWith',
+    'PlatformHaveWorkedWith',
+    'PlatformWantToWorkWith',
+    'WebframeHaveWorkedWith',
+    'WebframeWantToWorkWith',
+    'MiscTechHaveWorkedWith',
+    'MiscTechWantToWorkWith',
+    'ToolsTechHaveWorkedWith',
+    'ToolsTechWantToWorkWith',
+    'NEWCollabToolsHaveWorkedWith',
+    'NEWCollabToolsWantToWorkWith',
+    'OpSys',
+    'NEWStuck'
+]]
+
+community = df[[
+    'NEWSOSites',
+    'SOVisitFreq',
+    'SOAccount',
+    'SOPartFreq',
+    'SOComm',
+    'NEWOtherComms'
+]]
+
+demograph = df[[
+    'Age',
+    'Gender',
+    'Trans',
+    'Sexuality',
+    'Ethnicity',
+    'Accessibility',
+    'MentalHealth'
+]]
+
 final_q = df[['SurveyLength', 'SurveyEase']]
 
 
@@ -38,11 +71,15 @@ def display_menu():
     """
 
     list_length = range(1, 5)
-    
+
     print('\n' * 2)
     print('\t\tMENU')
-    print(tabulate([['1- ', 'Survey Results'], ['2- ', 'Cross-tabulation Analysis'],
-                    ['3- ', 'Edit Column Names'], ['4- ', 'Exit']]))
+    print(tabulate([
+        ['1- ', 'Survey Results'],
+        ['2- ', 'Cross-tabulation Analysis'],
+        ['3- ', 'Edit Column Names'],
+        ['4- ', 'Exit']
+    ]))
     user_choice = validate_input(list_length)
 
     if user_choice == 1:
@@ -59,7 +96,6 @@ def display_menu():
     else:
         print('You have exited the program.')
         exit()
-        
 
 
 def validate_input(lists):
@@ -114,7 +150,8 @@ def display_sections():
 
     print('\nSECTIONS:\n')
     print(' 1- Basic Information\n 2- Education, Work, and Career \
-            \n 3- Technology and Tech Culture\n 4- Stack Overflow Usage + Community \
+            \n 3- Technology and Tech Culture \
+            \n 4- Stack Overflow Usage + Community \
             \n 5- Demographic Information\n 6- Final Questions')
     section_number = validate_input(list_length)
 
@@ -164,11 +201,11 @@ def display_questions(section):
     question_num = validate_input(result)
 
     # subtract 1 to get to zero-based index
-    question_id = result[question_num -1]
+    question_id = result[question_num - 1]
 
     print(f'You have chosen {question_id}')
     return question_id
-    
+
 
 def display_survey_results(question):
     """
@@ -187,7 +224,12 @@ def display_survey_results(question):
     print('\t\tRESULTS\n')
     if question in df.columns:
         if df[question].str.contains(';').any():
-            count = df[question].str.split(';', expand=True).stack().value_counts()
+            count = (
+                df[question]
+                .str.split(';', expand=True)
+                .stack()
+                .value_counts()
+            )
         else:
             count = df[question].value_counts()
         print(count.head(15))
@@ -202,7 +244,7 @@ def cross_tab():
     multi- or single-answer questions. Displays cross-tabulation
     results. Displays the main menu.
     """
-     
+
     print('\n\t\tChoose DATASET 1')
     sec_group1 = display_sections()
     question_group1 = display_questions(sec_group1)
@@ -216,21 +258,38 @@ def cross_tab():
     # display 10 columns of the cross-tab
     pd.set_option('display.max_columns', 10)
 
-    if df[question_group1].str.contains(';').any() and df[question_group2].str.contains(';').any():
-        multi_q1 = df[question_group1].str.split(';', expand=True).stack().reset_index(drop=True)
-        multi_q2 = df[question_group2].str.split(';', expand=True).stack().reset_index(drop=True)
-        multi_multi = pd.crosstab(multi_q1, multi_q2)       
-        print(multi_multi)        
-
+    if (
+        df[question_group1].str.contains(';').any()
+        and df[question_group2].str.contains(';').any()
+    ):
+        multi_q1 = (
+            df[question_group1]
+            .str.split(';', expand=True)
+            .stack().reset_index(drop=True)
+        )
+        multi_q2 = (
+            df[question_group2]
+            .str.split(';', expand=True)
+            .stack().reset_index(drop=True)
+        )
+        multi_multi = pd.crosstab(multi_q1, multi_q2)
+        print(multi_multi)
 
     elif df[question_group1].str.contains(';').any():
-        multi_q = df[question_group1].str.split(';', expand=True).stack().reset_index(drop=True)
-        multi_single = pd.crosstab(multi_q, df[question_group2])        
+        multi_q = (
+            df[question_group1]
+            .str.split(';', expand=True)
+            .stack().reset_index(drop=True)
+        )
+        multi_single = pd.crosstab(multi_q, df[question_group2])
         print(multi_single)
-        
 
     elif df[question_group2].str.contains(';').any():
-        multi_qu = df[question_group2].str.split(';', expand=True).stack().reset_index(drop=True)
+        multi_qu = (
+            df[question_group2]
+            .str.split(';', expand=True).stack()
+            .reset_index(drop=True)
+        )
         single_multi = pd.crosstab(df[question_group1], multi_qu)
         print(single_multi)
 
@@ -247,8 +306,8 @@ def change_column_name(df, old_name):
 
     Prompts the user to enter a new name for the specified DataFrame column.
     Renames the column using rename() pandas method.
-    Uses the 'tabulate' library to display the updated list of all DataFrame columns.
-    Displays the main menu.
+    Uses the 'tabulate' library to display the updated list of all DataFrame
+    columns. Displays the main menu.
 
     Parameters:
         df (pd.DataFrame): the DataFrame to modify.
