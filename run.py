@@ -2,7 +2,7 @@ import pandas as pd
 from tabulate import tabulate
 
 
-df = pd.read_csv('survey-res-halved.csv')
+df = pd.read_csv('assets/survey-res-halved.csv')
 
 
 # Devide DataFrame columns into sections
