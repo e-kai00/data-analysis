@@ -21,8 +21,9 @@ The live link to the app - [Survey results analysis](https://survey-results-anal
 
 - __Survey results__
 
+  - Prompts the user to select a section and question number to display results.
   - Displays the survey results in a clear and concise format.
-  - Prompts the user to select a section and question number to display results for.
+  
 
 <br>
 
@@ -69,7 +70,7 @@ The program works with the survey, which includes both text and numerical data.
 The program uses survey data provided in a file called "survey-res-halved.csv". This file is in .csv format and is read into the program using the Pandas library. In order to make the data more manageable, it has been pre-processed. Specifically, the original data was too large to work with efficiently, so it has been reduced in size by selecting a sample of respondents. The resulting dataset is used for all subsequent analyses and visualizations in the program.
 
 The survey results are organized using the Pandas DataFrame, which allows for easy manipulation and analysis of the data.
-The main entities in the survey are the survey questions and the responses provided by the participants.  Each survey question has a number of attributes associated with it, including the question text, response options, and the number of respondents who selected each response. Some survey questions have a multi-answer option, which are stored in a single column with a delimiter (";").
+The main entities in the survey are the survey questions and the responses provided by the participants.  Each survey question has a number of attributes associated with it, including the question text, response options, and the number of respondents who selected each response. Some survey questions have a multi-answer option, which are stored in the survey data in a single column with a delimiter (";").
 
 The user is required to enter valid input when selecting menu options or choosing a specific question to view results for.
 
@@ -95,22 +96,22 @@ No unfixed bugs.
 
 ## Validator Testing
 
-PEP8
-no errors were returned from pep8ci.herokuapp.com
+- PEP8
+  - no errors were returned from pep8ci.herokuapp.com
 
 <br>
 
 ## Deployment
 
-This project was deployed using Code Institute's mock terminal for Heroku, following the steps outlined below:
+This project was deployed using Code Institute's mock terminal for Heroku following the steps outlined below:
 
  
-- in Heroku account choose 'Create new app' from the 'New' menu.
-- in 'Settings' configure 'Config Vars', scroll down to the 'Buildpack' section and add Python and NodeJS buildpacks.
-- in the 'Deploy' tab select 'GitHub' to connect to your GitHub repository.
-- choose the repository to deploy.
+- in Heroku account choose 'Create new app' from the 'New' menu
+- in 'Settings' configure 'Config Vars', scroll down to the 'Buildpack' section and add Python and NodeJS buildpacks
+- in the 'Deploy' tab select 'GitHub' to connect to your GitHub repository
+- choose the repository to deploy
 - scroll down the page and press 'Deploy' button
-- once your web app has been successfully deployed, you will receive a link to your deployed app. This link can be used to access and test your application.
+- once the web app has been successfully deployed, you will see a link to the deployed app. This link can be used to access and test the application
 
 The live link to the app - [Survey results analysis](https://survey-results-analysis.herokuapp.com/)
 
