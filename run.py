@@ -89,6 +89,7 @@ def display_menu():
         cross_tab()
 
     elif user_choice == 3:
+        print('\nTo edit a column, specify its section and question number')
         user_section = display_sections()
         user_question = display_questions(user_section)
         change_column_name(df, user_question)
@@ -245,7 +246,8 @@ def cross_tab():
     results. Displays the main menu.
     """
 
-    print('\n\t\tChoose DATASET 1')
+    print('\nChoose 2 datasets to analyse:\n')
+    print('\t\tChoose DATASET 1')
     sec_group1 = display_sections()
     question_group1 = display_questions(sec_group1)
     print('\n' * 2)
